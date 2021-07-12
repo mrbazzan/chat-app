@@ -10,6 +10,6 @@ urlpatterns = [
    
     path('', views.home, name="home"),
     path('<str:room>/', views.room, name="room"),
-    path('getMessages/<str:room>/', views.getMessages, name="getMessages"),
+    path('getMessages/<int:room_id>/', views.getMessages, name="getMessages"),
 
 ]

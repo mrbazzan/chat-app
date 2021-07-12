@@ -1,17 +1,17 @@
 
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
+from django.urls import reverse
 
 from .models import Room, Message
 # Create your views here.
 
 
-def home(request): 
+def home(request):
     return render(request, "home.html")
 
 
 def room(request, room):
-    print(room)
     user_name = request.GET.get('username')
     room = Room.objects.get(slug=room)
     
@@ -47,8 +47,14 @@ def send(request):
     return HttpResponse("Message sent")
 
 
-def getMessages(request, room):
-    print(room)
-    messages = Message.objects.filter(room=Room.objects.get(slug=room))
-    print(messages)
-    return JsonResponse()
+def getMessages(request, room_id):
+    messages = Message.objects.filter(room=Room.objects.get(id=room_id))
+    _messages = []
+    for message in messages:
+        _messages.append(
+            {
+            "date": message.date,
+            "user_message": message.user_message,
+            "user": message.user
+        })
+    return JsonResponse({"messages": _messages})
